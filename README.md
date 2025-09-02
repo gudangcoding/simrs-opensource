@@ -12,9 +12,7 @@
 
 Berikut adalah tampilan aplikasi SIMRS:
 
-<p align="center">
-  <img src="public/img/dashboard.png" alt="Dashboard SIMRS" width="700">
-</p>
+
 
 <p align="center">
   <img src="public/img/Screenshot_1.png" alt="Daftar Pasien SIMRS" width="700">
