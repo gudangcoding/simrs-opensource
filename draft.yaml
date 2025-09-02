@@ -1,0 +1,310 @@
+models:
+  models:
+  User:
+    id: id
+    name: string
+    email: string unique
+    email_verified_at: timestamp nullable
+    password: string
+    role: enum('admin', 'dokter', 'perawat', 'apoteker', 'kasir', 'receptionist')
+    phone: string nullable
+    address: text nullable
+    birth_date: date nullable
+    gender: enum('male', 'female')
+    is_active: boolean default:true
+    remember_token: string nullable
+   
+
+  Patient:
+    id: id
+    medical_record_number: string unique
+    name: string
+    birth_date: date
+    gender: enum('male', 'female')
+    phone: string nullable
+    email: string nullable
+    address: text nullable
+    emergency_contact_name: string nullable
+    emergency_contact_phone: string nullable
+    blood_type: enum('A', 'B', 'AB', 'O') nullable
+    allergies: text nullable
+    medical_history: text nullable
+    insurance_number: string nullable
+    insurance_type: string nullable
+    is_active: boolean default:true
+    
+
+  Doctor:
+    id: id
+    user_id: id foreign:users.id
+    specialization: string
+    license_number: string unique
+    experience_years: integer
+    consultation_fee: decimal(10,2)
+    is_available: boolean default:true
+    
+
+  Nurse:
+    id: id
+    user_id: id foreign:users.id
+    license_number: string unique
+    department: string
+    shift: enum('morning', 'afternoon', 'night')
+    is_available: boolean default:true
+    
+
+  Department:
+    id: id
+    name: string
+    description: text nullable
+    head_doctor_id: id foreign:doctors.id nullable
+    is_active: boolean default:true
+    
+
+  Room:
+    id: id
+    room_number: string unique
+    room_type: enum('general', 'vip', 'icu', 'emergency', 'surgery', 'maternity')
+    department_id: id foreign:departments.id
+    bed_capacity: integer
+    current_occupancy: integer default:0
+    price_per_day: decimal(10,2) nullable
+    is_available: boolean default:true
+    
+
+  Appointment:
+    id: id
+    patient_id: id foreign:patients.id
+    doctor_id: id foreign:doctors.id
+    appointment_date: date
+    appointment_time: time
+    status: enum('scheduled', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show')
+    complaint: text
+    notes: text nullable
+   
+
+  MedicalRecord:
+    id: id
+    patient_id: id foreign:patients.id
+    doctor_id: id foreign:doctors.id
+    appointment_id: id foreign:appointments.id nullable
+    chief_complaint: text
+    diagnosis: text
+    treatment: text
+    prescription: text nullable
+    vital_signs: json nullable
+    lab_results: json nullable
+    follow_up_date: date nullable
+    
+
+  Admission:
+    id: id
+    patient_id: id foreign:patients.id
+    doctor_id: id foreign:doctors.id
+    room_id: id foreign:rooms.id
+    admission_date: datetime
+    discharge_date: datetime nullable
+    status: enum('admitted', 'discharged', 'transferred')
+    admission_type: enum('emergency', 'scheduled', 'transfer')
+    diagnosis: text
+    treatment_plan: text
+    total_cost: decimal(10,2) default:0
+    
+
+  Medicine:
+    id: id
+    name: string
+    generic_name: string nullable
+    category: string
+    dosage_form: enum('tablet', 'capsule', 'syrup', 'injection', 'cream', 'drops')
+    strength: string
+    unit: string
+    stock_quantity: integer default:0
+    minimum_stock: integer default:10
+    price_per_unit: decimal(10,2)
+    expiry_date: date nullable
+    supplier: string nullable
+    is_active: boolean default:true
+    
+
+  Prescription:
+    id: id
+    medical_record_id: id foreign:medical_records.id
+    patient_id: id foreign:patients.id
+    doctor_id: id foreign:doctors.id
+    prescription_date: datetime
+    status: enum('pending', 'dispensed', 'cancelled')
+    total_amount: decimal(10,2) default:0
+    notes: text nullable
+    
+
+  PrescriptionItem:
+    id: id
+    prescription_id: id foreign:prescriptions.id
+    medicine_id: id foreign:medicines.id
+    quantity: integer
+    dosage: string
+    frequency: string
+    duration: string
+    notes: text nullable
+    
+
+  LabTest:
+    id: id
+    name: string
+    category: string
+    normal_range: string nullable
+    unit: string nullable
+    price: decimal(10,2)
+    is_active: boolean default:true
+    
+
+  LabResult:
+    id: id
+    medical_record_id: id foreign:medical_records.id
+    patient_id: id foreign:patients.id
+    doctor_id: id foreign:doctors.id
+    lab_test_id: id foreign:lab_tests.id
+    test_date: datetime
+    result_value: string
+    result_status: enum('normal', 'abnormal', 'critical')
+    notes: text nullable
+   
+
+  Payment:
+    id: id
+    patient_id: id foreign:patients.id
+    payment_type: enum('consultation', 'medicine', 'lab_test', 'room', 'procedure', 'other')
+    reference_id: id nullable
+    reference_type: string nullable
+    amount: decimal(10,2)
+    payment_method: enum('cash', 'credit_card', 'debit_card', 'insurance', 'transfer')
+    payment_status: enum('pending', 'paid', 'failed', 'refunded')
+    payment_date: datetime nullable
+    notes: text nullable
+    
+
+  Insurance:
+    id: id
+    name: string
+    type: enum('government', 'private', 'corporate')
+    coverage_percentage: decimal(5,2)
+    is_active: boolean default:true
+    
+
+  PatientInsurance:
+    id: id
+    patient_id: id foreign:patients.id
+    insurance_id: id foreign:insurances.id
+    policy_number: string
+    expiry_date: date nullable
+    is_active: boolean default:true
+    
+
+  Schedule:
+    id: id
+    doctor_id: id foreign:doctors.id
+    day_of_week: enum('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
+    start_time: time
+    end_time: time
+    max_patients: integer default:20
+    is_active: boolean default:true
+    
+
+  Notification:
+    id: id
+    user_id: id foreign:users.id nullable
+    title: string
+    message: text
+    type: enum('info', 'warning', 'error', 'success')
+    is_read: boolean default:false
+    
+
+
+controllers:
+  UserController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  PatientController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  DoctorController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  NurseController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  DepartmentController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  RoomController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  AppointmentController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  MedicalRecordController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  AdmissionController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  MedicineController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  PrescriptionController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  PrescriptionItemController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  LabTestController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  LabResultController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  PaymentController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  InsuranceController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  PatientInsuranceController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  ScheduleController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+
+  NotificationController:
+    resource: true
+    only: ['index', 'show', 'store', 'update', 'destroy']
+    PatientController:
+      resource: true
+      only: ['index', 'show', 'store', 'update', 'destroy']
+
+    DoctorController:
+      resource: true
+      only: ['index', 'show', 'store', 'update', 'destroy']
+
+    NurseController:
+      resource: true
+      only: ['index', 'show', 'store', 'update', 'destroy']

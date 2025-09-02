@@ -1,0 +1,118 @@
+created:
+    - app/Http/Controllers/UserController.php
+    - app/Http/Controllers/PatientController.php
+    - app/Http/Controllers/DoctorController.php
+    - app/Http/Controllers/NurseController.php
+    - app/Http/Controllers/DepartmentController.php
+    - app/Http/Controllers/RoomController.php
+    - app/Http/Controllers/AppointmentController.php
+    - app/Http/Controllers/MedicalRecordController.php
+    - app/Http/Controllers/AdmissionController.php
+    - app/Http/Controllers/MedicineController.php
+    - app/Http/Controllers/PrescriptionController.php
+    - app/Http/Controllers/PrescriptionItemController.php
+    - app/Http/Controllers/LabTestController.php
+    - app/Http/Controllers/LabResultController.php
+    - app/Http/Controllers/PaymentController.php
+    - app/Http/Controllers/InsuranceController.php
+    - app/Http/Controllers/PatientInsuranceController.php
+    - app/Http/Controllers/ScheduleController.php
+    - app/Http/Controllers/NotificationController.php
+    - database/factories/UserFactory.php
+    - database/factories/PatientFactory.php
+    - database/factories/DoctorFactory.php
+    - database/factories/NurseFactory.php
+    - database/factories/DepartmentFactory.php
+    - database/factories/RoomFactory.php
+    - database/factories/AppointmentFactory.php
+    - database/factories/MedicalRecordFactory.php
+    - database/factories/AdmissionFactory.php
+    - database/factories/MedicineFactory.php
+    - database/factories/PrescriptionFactory.php
+    - database/factories/PrescriptionItemFactory.php
+    - database/factories/LabTestFactory.php
+    - database/factories/LabResultFactory.php
+    - database/factories/PaymentFactory.php
+    - database/factories/InsuranceFactory.php
+    - database/factories/PatientInsuranceFactory.php
+    - database/factories/ScheduleFactory.php
+    - database/factories/NotificationFactory.php
+    - database/migrations/2025_09_02_031353_create_users_table.php
+    - database/migrations/2025_09_02_031354_create_patients_table.php
+    - database/migrations/2025_09_02_031355_create_doctors_table.php
+    - database/migrations/2025_09_02_031356_create_nurses_table.php
+    - database/migrations/2025_09_02_031357_create_departments_table.php
+    - database/migrations/2025_09_02_031358_create_rooms_table.php
+    - database/migrations/2025_09_02_031359_create_appointments_table.php
+    - database/migrations/2025_09_02_031400_create_medical_records_table.php
+    - database/migrations/2025_09_02_031401_create_admissions_table.php
+    - database/migrations/2025_09_02_031402_create_medicines_table.php
+    - database/migrations/2025_09_02_031403_create_prescriptions_table.php
+    - database/migrations/2025_09_02_031404_create_prescription_items_table.php
+    - database/migrations/2025_09_02_031405_create_lab_tests_table.php
+    - database/migrations/2025_09_02_031406_create_lab_results_table.php
+    - database/migrations/2025_09_02_031407_create_payments_table.php
+    - database/migrations/2025_09_02_031408_create_insurances_table.php
+    - database/migrations/2025_09_02_031409_create_patient_insurances_table.php
+    - database/migrations/2025_09_02_031410_create_schedules_table.php
+    - database/migrations/2025_09_02_031411_create_notifications_table.php
+    - app/Models/User.php
+    - app/Models/Patient.php
+    - app/Models/Doctor.php
+    - app/Models/Nurse.php
+    - app/Models/Department.php
+    - app/Models/Room.php
+    - app/Models/Appointment.php
+    - app/Models/MedicalRecord.php
+    - app/Models/Admission.php
+    - app/Models/Medicine.php
+    - app/Models/Prescription.php
+    - app/Models/PrescriptionItem.php
+    - app/Models/LabTest.php
+    - app/Models/LabResult.php
+    - app/Models/Payment.php
+    - app/Models/Insurance.php
+    - app/Models/PatientInsurance.php
+    - app/Models/Schedule.php
+    - app/Models/Notification.php
+    - tests/Feature/Http/Controllers/UserControllerTest.php
+    - tests/Feature/Http/Controllers/PatientControllerTest.php
+    - tests/Feature/Http/Controllers/DoctorControllerTest.php
+    - tests/Feature/Http/Controllers/NurseControllerTest.php
+    - tests/Feature/Http/Controllers/DepartmentControllerTest.php
+    - tests/Feature/Http/Controllers/RoomControllerTest.php
+    - tests/Feature/Http/Controllers/AppointmentControllerTest.php
+    - tests/Feature/Http/Controllers/MedicalRecordControllerTest.php
+    - tests/Feature/Http/Controllers/AdmissionControllerTest.php
+    - tests/Feature/Http/Controllers/MedicineControllerTest.php
+    - tests/Feature/Http/Controllers/PrescriptionControllerTest.php
+    - tests/Feature/Http/Controllers/PrescriptionItemControllerTest.php
+    - tests/Feature/Http/Controllers/LabTestControllerTest.php
+    - tests/Feature/Http/Controllers/LabResultControllerTest.php
+    - tests/Feature/Http/Controllers/PaymentControllerTest.php
+    - tests/Feature/Http/Controllers/InsuranceControllerTest.php
+    - tests/Feature/Http/Controllers/PatientInsuranceControllerTest.php
+    - tests/Feature/Http/Controllers/ScheduleControllerTest.php
+    - tests/Feature/Http/Controllers/NotificationControllerTest.php
+updated:
+    - routes/web.php
+models:
+    User: { id: id, name: string, email: 'string unique', email_verified_at: 'timestamp nullable', password: string, role: "enum('admin', 'dokter', 'perawat', 'apoteker', 'kasir', 'receptionist')", phone: 'string nullable', address: 'text nullable', birth_date: 'date nullable', gender: "enum('male', 'female')", is_active: 'boolean default:true', remember_token: 'string nullable', created_at: timestamp, updated_at: timestamp }
+    Patient: { id: id, medical_record_number: 'string unique', name: string, birth_date: date, gender: "enum('male', 'female')", phone: 'string nullable', email: 'string nullable', address: 'text nullable', emergency_contact_name: 'string nullable', emergency_contact_phone: 'string nullable', blood_type: "enum('A', 'B', 'AB', 'O') nullable", allergies: 'text nullable', medical_history: 'text nullable', insurance_number: 'string nullable', insurance_type: 'string nullable', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Doctor: { id: id, user_id: 'id foreign:users.id', specialization: string, license_number: 'string unique', experience_years: integer, consultation_fee: 'decimal(10,2)', is_available: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Nurse: { id: id, user_id: 'id foreign:users.id', license_number: 'string unique', department: string, shift: "enum('morning', 'afternoon', 'night')", is_available: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Department: { id: id, name: string, description: 'text nullable', head_doctor_id: 'id foreign:doctors.id nullable', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Room: { id: id, room_number: 'string unique', room_type: "enum('general', 'vip', 'icu', 'emergency', 'surgery', 'maternity')", department_id: 'id foreign:departments.id', bed_capacity: integer, current_occupancy: 'integer default:0', price_per_day: 'decimal(10,2) nullable', is_available: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Appointment: { id: id, patient_id: 'id foreign:patients.id', doctor_id: 'id foreign:doctors.id', appointment_date: date, appointment_time: time, status: "enum('scheduled', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show')", complaint: text, notes: 'text nullable', created_at: timestamp, updated_at: timestamp }
+    MedicalRecord: { id: id, patient_id: 'id foreign:patients.id', doctor_id: 'id foreign:doctors.id', appointment_id: 'id foreign:appointments.id nullable', chief_complaint: text, diagnosis: text, treatment: text, prescription: 'text nullable', vital_signs: 'json nullable', lab_results: 'json nullable', follow_up_date: 'date nullable', created_at: timestamp, updated_at: timestamp }
+    Admission: { id: id, patient_id: 'id foreign:patients.id', doctor_id: 'id foreign:doctors.id', room_id: 'id foreign:rooms.id', admission_date: datetime, discharge_date: 'datetime nullable', status: "enum('admitted', 'discharged', 'transferred')", admission_type: "enum('emergency', 'scheduled', 'transfer')", diagnosis: text, treatment_plan: text, total_cost: 'decimal(10,2) default:0', created_at: timestamp, updated_at: timestamp }
+    Medicine: { id: id, name: string, generic_name: 'string nullable', category: string, dosage_form: "enum('tablet', 'capsule', 'syrup', 'injection', 'cream', 'drops')", strength: string, unit: string, stock_quantity: 'integer default:0', minimum_stock: 'integer default:10', price_per_unit: 'decimal(10,2)', expiry_date: 'date nullable', supplier: 'string nullable', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Prescription: { id: id, medical_record_id: 'id foreign:medical_records.id', patient_id: 'id foreign:patients.id', doctor_id: 'id foreign:doctors.id', prescription_date: datetime, status: "enum('pending', 'dispensed', 'cancelled')", total_amount: 'decimal(10,2) default:0', notes: 'text nullable', created_at: timestamp, updated_at: timestamp }
+    PrescriptionItem: { id: id, prescription_id: 'id foreign:prescriptions.id', medicine_id: 'id foreign:medicines.id', quantity: integer, dosage: string, frequency: string, duration: string, notes: 'text nullable', created_at: timestamp, updated_at: timestamp }
+    LabTest: { id: id, name: string, category: string, normal_range: 'string nullable', unit: 'string nullable', price: 'decimal(10,2)', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    LabResult: { id: id, medical_record_id: 'id foreign:medical_records.id', patient_id: 'id foreign:patients.id', doctor_id: 'id foreign:doctors.id', lab_test_id: 'id foreign:lab_tests.id', test_date: datetime, result_value: string, result_status: "enum('normal', 'abnormal', 'critical')", notes: 'text nullable', created_at: timestamp, updated_at: timestamp }
+    Payment: { id: id, patient_id: 'id foreign:patients.id', payment_type: "enum('consultation', 'medicine', 'lab_test', 'room', 'procedure', 'other')", reference_id: 'id nullable', reference_type: 'string nullable', amount: 'decimal(10,2)', payment_method: "enum('cash', 'credit_card', 'debit_card', 'insurance', 'transfer')", payment_status: "enum('pending', 'paid', 'failed', 'refunded')", payment_date: 'datetime nullable', notes: 'text nullable', created_at: timestamp, updated_at: timestamp }
+    Insurance: { id: id, name: string, type: "enum('government', 'private', 'corporate')", coverage_percentage: 'decimal(5,2)', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    PatientInsurance: { id: id, patient_id: 'id foreign:patients.id', insurance_id: 'id foreign:insurances.id', policy_number: string, expiry_date: 'date nullable', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Schedule: { id: id, doctor_id: 'id foreign:doctors.id', day_of_week: "enum('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')", start_time: time, end_time: time, max_patients: 'integer default:20', is_active: 'boolean default:true', created_at: timestamp, updated_at: timestamp }
+    Notification: { id: id, user_id: 'id foreign:users.id nullable', title: string, message: text, type: "enum('info', 'warning', 'error', 'success')", is_read: 'boolean default:false', created_at: timestamp, updated_at: timestamp }
