@@ -8,6 +8,17 @@
 </p>
 
 ## SIMRS – Sistem Informasi Manajemen Rumah Sakit
+### Screenshot Aplikasi
+
+Berikut adalah tampilan aplikasi SIMRS:
+
+<p align="center">
+  <img src="public/img/dashboard.png" alt="Dashboard SIMRS" width="700">
+</p>
+
+<p align="center">
+  <img src="public/img/Screenshot_1.png" alt="Daftar Pasien SIMRS" width="700">
+</p>
 
 SIMRS ini dibangun oleh LKP Naura, dikembangkan oleh salah satu instruktur: Neprianto.
 
