@@ -146,16 +146,24 @@ export default function DataTable({
                         </div>
                         <div className="flex space-x-2">
                             {pagination.links.map((link, index) => (
-                                <Link
-                                    key={index}
-                                    href={link.url}
-                                    className={`px-3 py-1 text-sm rounded-md ${
-                                        link.active 
-                                            ? 'bg-indigo-600 text-white' 
-                                            : 'bg-white text-gray-700 hover:bg-gray-50'
-                                    } ${!link.url ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                    dangerouslySetInnerHTML={{ __html: link.label }}
-                                />
+                                link.url ? (
+                                    <Link
+                                        key={index}
+                                        href={link.url}
+                                        className={`px-3 py-1 text-sm rounded-md ${
+                                            link.active 
+                                                ? 'bg-indigo-600 text-white' 
+                                                : 'bg-white text-gray-700 hover:bg-gray-50'
+                                        }`}
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                ) : (
+                                    <span
+                                        key={index}
+                                        className="px-3 py-1 text-sm rounded-md bg-white text-gray-400 opacity-50 cursor-not-allowed"
+                                        dangerouslySetInnerHTML={{ __html: link.label }}
+                                    />
+                                )
                             ))}
                         </div>
                     </div>

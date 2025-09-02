@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
+import { Field, Label, Input, Select, Textarea, Checkbox } from '@/Components/Form'
 import FlashMessage from '@/Components/FlashMessage'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
@@ -48,124 +49,39 @@ export default function Create() {
                         <h3 className="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
                         
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <div>
-                                <label htmlFor="medical_record_number" className="block text-sm font-medium text-gray-700">
-                                    Medical Record Number *
-                                </label>
-                                <input
-                                    type="text"
-                                    id="medical_record_number"
-                                    value={data.medical_record_number}
-                                    onChange={(e) => setData('medical_record_number', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    required
-                                />
-                                {errors.medical_record_number && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.medical_record_number}</p>
-                                )}
-                            </div>
+                            <Field label="Medical Record Number" htmlFor="medical_record_number" required>
+                                <Input id="medical_record_number" value={data.medical_record_number} onChange={(e) => setData('medical_record_number', e.target.value)} required error={errors.medical_record_number} />
+                            </Field>
 
-                            <div>
-                                <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                                    Full Name *
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    value={data.name}
-                                    onChange={(e) => setData('name', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    required
-                                />
-                                {errors.name && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.name}</p>
-                                )}
-                            </div>
+                            <Field label="Full Name" htmlFor="name" required>
+                                <Input id="name" value={data.name} onChange={(e) => setData('name', e.target.value)} required error={errors.name} />
+                            </Field>
 
-                            <div>
-                                <label htmlFor="birth_date" className="block text-sm font-medium text-gray-700">
-                                    Birth Date *
-                                </label>
-                                <input
-                                    type="date"
-                                    id="birth_date"
-                                    value={data.birth_date}
-                                    onChange={(e) => setData('birth_date', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    required
-                                />
-                                {errors.birth_date && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.birth_date}</p>
-                                )}
-                            </div>
+                            <Field label="Birth Date" htmlFor="birth_date" required>
+                                <Input id="birth_date" type="date" value={data.birth_date} onChange={(e) => setData('birth_date', e.target.value)} required error={errors.birth_date} />
+                            </Field>
 
-                            <div>
-                                <label htmlFor="gender" className="block text-sm font-medium text-gray-700">
-                                    Gender *
-                                </label>
-                                <select
-                                    id="gender"
-                                    value={data.gender}
-                                    onChange={(e) => setData('gender', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    required
-                                >
+                            <Field label="Gender" htmlFor="gender" required>
+                                <Select id="gender" value={data.gender} onChange={(e) => setData('gender', e.target.value)} required error={errors.gender}>
                                     <option value="">Select Gender</option>
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
-                                </select>
-                                {errors.gender && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.gender}</p>
-                                )}
-                            </div>
+                                </Select>
+                            </Field>
 
-                            <div>
-                                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                                    Phone Number
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="phone"
-                                    value={data.phone}
-                                    onChange={(e) => setData('phone', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                                {errors.phone && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.phone}</p>
-                                )}
-                            </div>
+                            <Field label="Phone Number" htmlFor="phone">
+                                <Input id="phone" type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} error={errors.phone} />
+                            </Field>
 
-                            <div>
-                                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                                    Email Address
-                                </label>
-                                <input
-                                    type="email"
-                                    id="email"
-                                    value={data.email}
-                                    onChange={(e) => setData('email', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                                {errors.email && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.email}</p>
-                                )}
-                            </div>
+                            <Field label="Email Address" htmlFor="email">
+                                <Input id="email" type="email" value={data.email} onChange={(e) => setData('email', e.target.value)} error={errors.email} />
+                            </Field>
                         </div>
 
                         <div className="mt-6">
-                            <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                                Address
-                            </label>
-                            <textarea
-                                id="address"
-                                rows={3}
-                                value={data.address}
-                                onChange={(e) => setData('address', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                            />
-                            {errors.address && (
-                                <p className="mt-1 text-sm text-red-600">{errors.address}</p>
-                            )}
+                            <Field label="Address" htmlFor="address">
+                                <Textarea id="address" rows={3} value={data.address} onChange={(e) => setData('address', e.target.value)} error={errors.address} />
+                            </Field>
                         </div>
                     </div>
 
@@ -173,37 +89,13 @@ export default function Create() {
                         <h3 className="text-lg font-medium text-gray-900 mb-4">Emergency Contact</h3>
                         
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <div>
-                                <label htmlFor="emergency_contact_name" className="block text-sm font-medium text-gray-700">
-                                    Emergency Contact Name
-                                </label>
-                                <input
-                                    type="text"
-                                    id="emergency_contact_name"
-                                    value={data.emergency_contact_name}
-                                    onChange={(e) => setData('emergency_contact_name', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                                {errors.emergency_contact_name && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.emergency_contact_name}</p>
-                                )}
-                            </div>
+                            <Field label="Emergency Contact Name" htmlFor="emergency_contact_name">
+                                <Input id="emergency_contact_name" value={data.emergency_contact_name} onChange={(e) => setData('emergency_contact_name', e.target.value)} error={errors.emergency_contact_name} />
+                            </Field>
 
-                            <div>
-                                <label htmlFor="emergency_contact_phone" className="block text-sm font-medium text-gray-700">
-                                    Emergency Contact Phone
-                                </label>
-                                <input
-                                    type="tel"
-                                    id="emergency_contact_phone"
-                                    value={data.emergency_contact_phone}
-                                    onChange={(e) => setData('emergency_contact_phone', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                                {errors.emergency_contact_phone && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.emergency_contact_phone}</p>
-                                )}
-                            </div>
+                            <Field label="Emergency Contact Phone" htmlFor="emergency_contact_phone">
+                                <Input id="emergency_contact_phone" type="tel" value={data.emergency_contact_phone} onChange={(e) => setData('emergency_contact_phone', e.target.value)} error={errors.emergency_contact_phone} />
+                            </Field>
                         </div>
                     </div>
 
@@ -211,76 +103,31 @@ export default function Create() {
                         <h3 className="text-lg font-medium text-gray-900 mb-4">Medical Information</h3>
                         
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
-                            <div>
-                                <label htmlFor="blood_type" className="block text-sm font-medium text-gray-700">
-                                    Blood Type
-                                </label>
-                                <select
-                                    id="blood_type"
-                                    value={data.blood_type}
-                                    onChange={(e) => setData('blood_type', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                >
+                            <Field label="Blood Type" htmlFor="blood_type">
+                                <Select id="blood_type" value={data.blood_type} onChange={(e) => setData('blood_type', e.target.value)} error={errors.blood_type}>
                                     <option value="">Select Blood Type</option>
                                     <option value="A">A</option>
                                     <option value="B">B</option>
                                     <option value="AB">AB</option>
                                     <option value="O">O</option>
-                                </select>
-                                {errors.blood_type && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.blood_type}</p>
-                                )}
-                            </div>
+                                </Select>
+                            </Field>
 
-                            <div>
-                                <label htmlFor="insurance_type" className="block text-sm font-medium text-gray-700">
-                                    Insurance Type
-                                </label>
-                                <input
-                                    type="text"
-                                    id="insurance_type"
-                                    value={data.insurance_type}
-                                    onChange={(e) => setData('insurance_type', e.target.value)}
-                                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                />
-                                {errors.insurance_type && (
-                                    <p className="mt-1 text-sm text-red-600">{errors.insurance_type}</p>
-                                )}
-                            </div>
+                            <Field label="Insurance Type" htmlFor="insurance_type">
+                                <Input id="insurance_type" value={data.insurance_type} onChange={(e) => setData('insurance_type', e.target.value)} error={errors.insurance_type} />
+                            </Field>
                         </div>
 
                         <div className="mt-6">
-                            <label htmlFor="allergies" className="block text-sm font-medium text-gray-700">
-                                Allergies
-                            </label>
-                            <textarea
-                                id="allergies"
-                                rows={3}
-                                value={data.allergies}
-                                onChange={(e) => setData('allergies', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="List any known allergies..."
-                            />
-                            {errors.allergies && (
-                                <p className="mt-1 text-sm text-red-600">{errors.allergies}</p>
-                            )}
+                            <Field label="Allergies" htmlFor="allergies">
+                                <Textarea id="allergies" rows={3} value={data.allergies} onChange={(e) => setData('allergies', e.target.value)} placeholder="List any known allergies..." error={errors.allergies} />
+                            </Field>
                         </div>
 
                         <div className="mt-6">
-                            <label htmlFor="medical_history" className="block text-sm font-medium text-gray-700">
-                                Medical History
-                            </label>
-                            <textarea
-                                id="medical_history"
-                                rows={3}
-                                value={data.medical_history}
-                                onChange={(e) => setData('medical_history', e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Previous medical conditions, surgeries, etc..."
-                            />
-                            {errors.medical_history && (
-                                <p className="mt-1 text-sm text-red-600">{errors.medical_history}</p>
-                            )}
+                            <Field label="Medical History" htmlFor="medical_history">
+                                <Textarea id="medical_history" rows={3} value={data.medical_history} onChange={(e) => setData('medical_history', e.target.value)} placeholder="Previous medical conditions, surgeries, etc..." error={errors.medical_history} />
+                            </Field>
                         </div>
                     </div>
 

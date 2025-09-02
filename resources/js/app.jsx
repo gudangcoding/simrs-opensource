@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
-import { route } from 'ziggy-js'
+import { route as ziggyRoute } from 'ziggy-js'
 import { Ziggy } from './ziggyRoutes'
 
 import '../css/app.css'
@@ -13,7 +13,11 @@ createInertiaApp({
     resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
     setup({ el, App, props }) {
         const root = createRoot(el)
-        root.render(<App {...props} route={(name, params, absolute, config = Ziggy) => route(name, params, absolute, config)} />)
+        if (typeof window !== 'undefined') {
+            window.route = (name, params = {}, absolute = false, config = Ziggy) =>
+                ziggyRoute(name, params, absolute, config)
+        }
+        root.render(<App {...props} />)
     },
     progress: {
         color: '#4B5563',
