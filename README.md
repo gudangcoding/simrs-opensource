@@ -80,11 +80,52 @@ php artisan serve
 ```
 
 ### Rute Penting (Web)
+- `/login` – Halaman Login
 - `/dashboard` – Dashboard
 - `/patients` – CRUD Pasien
 - `/lab-results` – CRUD Hasil Lab
 
 API endpoints tersedia di `routes/api.php` untuk sumber daya lain (users, doctors, nurses, dll.).
+
+### 🔑 Kredensial Login Default
+
+Setelah menjalankan `php artisan migrate --seed`, Anda dapat login dengan kredensial berikut:
+
+#### **Administrator (Admin)**
+- **Email**: `admin@simrs.com`
+- **Password**: `password`
+- **Akses**: Semua fitur sistem
+
+#### **Dokter (Doctor)**
+- **Email**: `doctor@simrs.com`
+- **Password**: `password`
+- **Akses**: Dashboard, Patients, Appointments, Medical Records, Medicines, Prescriptions, Lab Results, Schedules, Notifications
+
+#### **Perawat (Nurse)**
+- **Email**: `nurse@simrs.com`
+- **Password**: `password`
+- **Akses**: Dashboard, Patients, Appointments, Medical Records, Medicines, Lab Results, Notifications
+
+#### **Resepsionis (Receptionist)**
+- **Email**: `receptionist@simrs.com`
+- **Password**: `password`
+- **Akses**: Dashboard, Patients, Appointments, Payments, Insurances, Notifications
+
+### 🔐 Fitur Keamanan
+- **Password hashing** otomatis
+- **Session management** dengan Laravel
+- **CSRF protection**
+- **Role-based access control** (RBAC)
+- **Middleware protection** untuk semua routes
+- **Menu dinamis** sesuai role user
+
+### 🚀 Cara Menggunakan Sistem Login
+
+1. **Akses halaman login**: `http://localhost:8000/login`
+2. **Login dengan kredensial** sesuai role yang diinginkan
+3. **Setelah login berhasil**, menu akan menampilkan fitur sesuai role user
+4. **Logout** melalui dropdown profile di kanan atas
+5. **Setiap role** akan melihat menu yang berbeda sesuai dengan hak aksesnya
 
 ### Struktur Proyek Singkat
 - `app/Http/Controllers` – Controller Laravel (mis. `PatientController`, `LabResultController`)

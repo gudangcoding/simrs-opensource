@@ -30,50 +30,59 @@ export default function AuthenticatedLayout({ children, header }) {
     })
     const { auth } = usePage().props
 
-    const navigationGroups = [
-        {
-            title: 'Overview',
-            items: [
-                { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
-            ],
-        },
-        {
-            title: 'Data Master',
-            items: [
-                { name: 'Patients', href: '/patients', icon: UserGroupIcon },
-                { name: 'Doctors', href: '/doctors', icon: UserIcon },
-                { name: 'Nurses', href: '/nurses', icon: UserIcon },
-                { name: 'Departments', href: '/departments', icon: BuildingOfficeIcon },
-                { name: 'Rooms', href: '/rooms', icon: BuildingOfficeIcon },
-            ],
-        },
-        {
-            title: 'Operations',
-            items: [
-                { name: 'Appointments', href: '/appointments', icon: CalendarDaysIcon },
-                { name: 'Medical Records', href: '/medical-records', icon: DocumentTextIcon },
-                { name: 'Admissions', href: '/admissions', icon: DocumentTextIcon },
-                { name: 'Medicines', href: '/medicines', icon: BeakerIcon },
-                { name: 'Prescriptions', href: '/prescriptions', icon: DocumentTextIcon },
-                { name: 'Lab Tests', href: '/lab-tests', icon: BeakerIcon },
-                { name: 'Lab Results', href: '/lab-results', icon: BeakerIcon },
-                { name: 'Schedules', href: '/schedules', icon: CalendarDaysIcon },
-            ],
-        },
-        {
-            title: 'Finance',
-            items: [
-                { name: 'Payments', href: '/payments', icon: CurrencyDollarIcon },
-                { name: 'Insurances', href: '/insurances', icon: CurrencyDollarIcon },
-            ],
-        },
-        {
-            title: 'System',
-            items: [
-                { name: 'Notifications', href: '/notifications', icon: BellIcon },
-            ],
-        },
-    ]
+    // Role-based navigation configuration
+    const getNavigationGroups = (userRole) => {
+        const allGroups = [
+            {
+                title: 'Overview',
+                items: [
+                    { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+                ],
+            },
+            {
+                title: 'Data Master',
+                items: [
+                    { name: 'Patients', href: '/patients', icon: UserGroupIcon, roles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+                    { name: 'Doctors', href: '/doctors', icon: UserIcon, roles: ['admin'] },
+                    { name: 'Nurses', href: '/nurses', icon: UserIcon, roles: ['admin'] },
+                    { name: 'Departments', href: '/departments', icon: BuildingOfficeIcon, roles: ['admin'] },
+                    { name: 'Rooms', href: '/rooms', icon: BuildingOfficeIcon, roles: ['admin'] },
+                ],
+            },
+            {
+                title: 'Operations',
+                items: [
+                    { name: 'Appointments', href: '/appointments', icon: CalendarDaysIcon, roles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+                    { name: 'Medical Records', href: '/medical-records', icon: DocumentTextIcon, roles: ['admin', 'doctor', 'nurse'] },
+                    { name: 'Medicines', href: '/medicines', icon: BeakerIcon, roles: ['admin', 'doctor', 'nurse'] },
+                    { name: 'Prescriptions', href: '/prescriptions', icon: DocumentTextIcon, roles: ['admin', 'doctor'] },
+                    { name: 'Lab Results', href: '/lab-results', icon: BeakerIcon, roles: ['admin', 'doctor', 'nurse'] },
+                    { name: 'Schedules', href: '/schedules', icon: CalendarDaysIcon, roles: ['admin', 'doctor'] },
+                ],
+            },
+            {
+                title: 'Finance',
+                items: [
+                    { name: 'Payments', href: '/payments', icon: CurrencyDollarIcon, roles: ['admin', 'receptionist'] },
+                    { name: 'Insurances', href: '/insurances', icon: CurrencyDollarIcon, roles: ['admin', 'receptionist'] },
+                ],
+            },
+            {
+                title: 'System',
+                items: [
+                    { name: 'Notifications', href: '/notifications', icon: BellIcon, roles: ['admin', 'doctor', 'nurse', 'receptionist'] },
+                ],
+            },
+        ]
+
+        // Filter groups and items based on user role
+        return allGroups.map(group => ({
+            ...group,
+            items: group.items.filter(item => item.roles.includes(userRole))
+        })).filter(group => group.items.length > 0)
+    }
+
+    const navigationGroups = getNavigationGroups(auth.user?.role || 'guest')
 
     return (
         <div className="min-h-screen bg-gray-50">

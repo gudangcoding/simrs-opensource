@@ -103,4 +103,57 @@ export function Field({ label, htmlFor, children, required }) {
     )
 }
 
+// New: Input with leading icon slot
+export function InputWithIcon({ id, icon: Icon, type = 'text', value, onChange, placeholder, required, disabled, error }) {
+    return (
+        <div>
+            <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <Icon className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                    id={id}
+                    type={type}
+                    value={value}
+                    onChange={onChange}
+                    placeholder={placeholder}
+                    required={required}
+                    disabled={disabled}
+                    className={`block w-full rounded-md pl-10 sm:text-sm ${
+                        error
+                            ? 'border-red-300 focus:border-red-500 focus:ring-red-500'
+                            : 'border-gray-300 focus:border-indigo-500 focus:ring-indigo-500'
+                    } ${disabled ? 'bg-gray-50 text-gray-500' : ''}`}
+                />
+            </div>
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        </div>
+    )
+}
+
+// New: Date input with proper formatting helpers
+export function DateInput({ id, value, onChange, required, error }) {
+    // value expected ISO string or 'YYYY-MM-DD' / 'YYYY-MM-DDTHH:mm'
+    return (
+        <Input id={id} type="date" value={value} onChange={onChange} required={required} error={error} />
+    )
+}
+
+// New: File upload
+export function FileUpload({ id, onChange, accept, multiple = false, error }) {
+    return (
+        <div>
+            <input
+                id={id}
+                type="file"
+                onChange={onChange}
+                accept={accept}
+                multiple={multiple}
+                className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm`}
+            />
+            {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+        </div>
+    )
+}
+
 

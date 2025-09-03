@@ -24,16 +24,14 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->safeEmail(),
             'email_verified_at' => fake()->dateTime(),
-            'password' => fake()->password(),
-            'role' => fake()->word(),
+            'password' => bcrypt('password'),
+            'role' => fake()->randomElement(['admin', 'doctor', 'nurse', 'receptionist']),
             'phone' => fake()->phoneNumber(),
-            'address' => fake()->text(),
-            'birth_date' => fake()->date(),
-            'gender' => fake()->word(),
-            'is_active' => fake()->boolean(),
-            'remember_token' => fake()->uuid(),
-            'created_at' => fake()->dateTime(),
-            'updated_at' => fake()->dateTime(),
+            'address' => fake()->address(),
+            'birth_date' => fake()->date('Y-m-d', '2000-01-01'),
+            'gender' => fake()->randomElement(['male', 'female']),
+            'is_active' => true,
+            'remember_token' => Str::random(10),
         ];
     }
 }

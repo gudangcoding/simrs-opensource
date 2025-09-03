@@ -1,7 +1,8 @@
 import { useState } from 'react'
 import { Link, useForm } from '@inertiajs/react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Field, Label, Input, Select, Textarea, Checkbox } from '@/Components/Form'
+import { Field, Label, Input, Select, Textarea, Checkbox, InputWithIcon } from '@/Components/Form'
+import { PhoneIcon } from '@heroicons/react/24/outline'
 import FlashMessage from '@/Components/FlashMessage'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
@@ -70,7 +71,7 @@ export default function Create() {
                             </Field>
 
                             <Field label="Phone Number" htmlFor="phone">
-                                <Input id="phone" type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} error={errors.phone} />
+                                <InputWithIcon id="phone" icon={PhoneIcon} type="tel" value={data.phone} onChange={(e) => setData('phone', e.target.value)} error={errors.phone} />
                             </Field>
 
                             <Field label="Email Address" htmlFor="email">
