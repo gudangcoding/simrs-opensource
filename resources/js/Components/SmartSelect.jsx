@@ -109,29 +109,61 @@ export default function SmartSelect({
         setFormData({})
     }
 
+    // Handle click outside modal
+    const handleBackdropClick = (e) => {
+        if (e.target === e.currentTarget) {
+            handleCancel()
+        }
+    }
+
+    // Handle ESC key
+    useEffect(() => {
+        const handleEscKey = (e) => {
+            if (e.key === 'Escape' && (showAddForm || showEditForm)) {
+                handleCancel()
+            }
+        }
+
+        if (showAddForm || showEditForm) {
+            document.addEventListener('keydown', handleEscKey)
+            document.body.style.overflow = 'hidden'
+        }
+
+        return () => {
+            document.removeEventListener('keydown', handleEscKey)
+            document.body.style.overflow = 'unset'
+        }
+    }, [showAddForm, showEditForm])
+
     const renderForm = (isEdit = false) => {
         const fields = isEdit ? editFormFields : addFormFields
         const title = isEdit ? editFormTitle : addFormTitle
         const submitText = isEdit ? "Update" : "Tambah"
 
         return (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-                <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto">
-                    <CardHeader>
-                        <CardTitle>{title}</CardTitle>
-                        <CardDescription>
+            <div 
+                className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-[9999] p-4"
+                onClick={handleBackdropClick}
+            >
+                <Card className="w-full max-w-md max-h-[90vh] overflow-y-auto bg-white shadow-2xl">
+                    <CardHeader className="bg-gray-50 border-b">
+                        <CardTitle className="text-lg text-gray-900">{title}</CardTitle>
+                        <CardDescription className="text-gray-600">
                             {isEdit ? "Edit data yang dipilih" : "Tambah data baru"}
                         </CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="p-6">
                         <form onSubmit={(e) => handleFormSubmit(e, isEdit)} className="space-y-4">
                             {fields.map((field) => (
                                 <div key={field.name} className="space-y-2">
-                                    <Label htmlFor={field.name}>{field.label}</Label>
+                                    <Label htmlFor={field.name} className="text-sm font-medium text-gray-700">
+                                        {field.label}
+                                        {field.required !== false && <span className="text-red-500 ml-1">*</span>}
+                                    </Label>
                                     {field.type === 'textarea' ? (
                                         <textarea
                                             id={field.name}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900 placeholder-gray-500"
                                             rows={field.rows || 3}
                                             value={formData[field.name] || ""}
                                             onChange={(e) => setFormData({...formData, [field.name]: e.target.value})}
@@ -141,7 +173,7 @@ export default function SmartSelect({
                                     ) : field.type === 'select' ? (
                                         <select
                                             id={field.name}
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-gray-900"
                                             value={formData[field.name] || ""}
                                             onChange={(e) => setFormData({...formData, [field.name]: e.target.value})}
                                             required={field.required !== false}
@@ -161,22 +193,24 @@ export default function SmartSelect({
                                             onChange={(e) => setFormData({...formData, [field.name]: e.target.value})}
                                             required={field.required !== false}
                                             placeholder={field.placeholder}
+                                            className="bg-white text-gray-900 placeholder-gray-500"
                                         />
                                     )}
                                 </div>
                             ))}
                             
-                            <div className="flex items-center justify-end space-x-3 pt-4">
+                            <div className="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
                                 <Button
                                     type="button"
                                     variant="outline"
                                     onClick={handleCancel}
+                                    className="px-4 py-2 text-gray-700 bg-white border-gray-300 hover:bg-gray-50"
                                 >
                                     Batal
                                 </Button>
                                 <Button
                                     type="submit"
-                                    className="bg-blue-600 hover:bg-blue-700"
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium"
                                 >
                                     {submitText}
                                 </Button>

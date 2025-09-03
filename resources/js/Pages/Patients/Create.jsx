@@ -1,7 +1,7 @@
 import { useState } from 'react'
-import { Link, useForm } from '@inertiajs/react'
+import { Link, useForm, router } from '@inertiajs/react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
-import { Field, Label, Input, Select, Textarea, Checkbox, InputWithIcon } from '@/Components/Form'
+import { Field, Label, Input, Select, Textarea, Checkbox, InputWithIcon, SmartSelect } from '@/Components/Form'
 import { PhoneIcon } from '@heroicons/react/24/outline'
 import FlashMessage from '@/Components/FlashMessage'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -28,6 +28,54 @@ export default function Create() {
     const handleSubmit = (e) => {
         e.preventDefault()
         post('/patients')
+    }
+
+    // Handle add new insurance
+    const handleAddInsurance = async (formData) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.post('/insurances', formData, {
+                    onSuccess: (page) => {
+                        // Get the new insurance ID from the response
+                        if (page.props.flash && page.props.flash.insurance_id) {
+                            resolve(page.props.flash.insurance_id)
+                        } else {
+                            // Fallback: refresh page to get updated list
+                            window.location.reload()
+                            resolve(null)
+                        }
+                    },
+                    onError: (errors) => {
+                        console.error('Error adding insurance:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error adding insurance:', error)
+            return null
+        }
+    }
+
+    // Handle edit insurance
+    const handleEditInsurance = async (formData, insuranceId) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.put(`/insurances/${insuranceId}`, formData, {
+                    onSuccess: () => {
+                        // Refresh the page to get updated insurance list
+                        window.location.reload()
+                        resolve()
+                    },
+                    onError: (errors) => {
+                        console.error('Error editing insurance:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error editing insurance:', error)
+        }
     }
 
     return (
@@ -115,7 +163,27 @@ export default function Create() {
                             </Field>
 
                             <Field label="Insurance Type" htmlFor="insurance_type">
-                                <Input id="insurance_type" value={data.insurance_type} onChange={(e) => setData('insurance_type', e.target.value)} error={errors.insurance_type} />
+                                <SmartSelect
+                                    label=""
+                                    value={data.insurance_type}
+                                    onChange={(value) => setData('insurance_type', value)}
+                                    options={[]} // Akan diisi dari controller
+                                    placeholder="Pilih insurance..."
+                                    onAdd={handleAddInsurance}
+                                    onEdit={handleEditInsurance}
+                                    addFormTitle="Tambah Insurance Baru"
+                                    editFormTitle="Edit Insurance"
+                                    addFormFields={[
+                                        { name: 'name', label: 'Nama Insurance', type: 'text', required: true, placeholder: 'Contoh: BPJS Kesehatan' },
+                                        { name: 'type', label: 'Tipe Insurance', type: 'text', required: true, placeholder: 'Contoh: Pemerintah/Swasta' },
+                                        { name: 'description', label: 'Deskripsi', type: 'textarea', rows: 3, placeholder: 'Deskripsi insurance...' }
+                                    ]}
+                                    editFormFields={[
+                                        { name: 'name', label: 'Nama Insurance', type: 'text', required: true },
+                                        { name: 'type', label: 'Tipe Insurance', type: 'text', required: true },
+                                        { name: 'description', label: 'Deskripsi', type: 'textarea', rows: 3 }
+                                    ]}
+                                />
                             </Field>
                         </div>
 

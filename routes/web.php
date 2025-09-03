@@ -15,6 +15,11 @@ Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update']
 Route::get('/password/change', [App\Http\Controllers\ProfileController::class, 'showChangePassword'])->name('password.change');
 Route::put('/password/change', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('password.change.update');
 
+// Demo Routes
+Route::get('/demo/smart-select', function () {
+    return Inertia::render('Demo/SmartSelectDemo');
+})->name('demo.smart-select');
+
 // Protected Routes
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
