@@ -161,6 +161,11 @@ const url = route('patients.show', { patient: 1 }, false, Ziggy)
 - Komponen UI terstruktur agar mudah diperluas
 - Ikuti pola pada modul Patients untuk menambah modul baru (Controller + Routes + Pages)
 
+### 📱 Aplikasi Mobile SIMRS
+
+Aplikasi mobile untuk pasien tersedia di repository berikut:  
+[https://github.com/gudangcoding/simrs_patient](https://github.com/gudangcoding/simrs_patient)
+
 ### Kredit
 - LKP Naura – Pemilik proyek
 - Neprianto – Developer/Instruktur
