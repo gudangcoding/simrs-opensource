@@ -37,15 +37,37 @@ class DoctorController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email',
+            'phone' => 'nullable|string|max:20',
             'specialization' => 'required|string|max:255',
             'license_number' => 'required|string|max:255|unique:doctors,license_number',
-            'experience_years' => 'nullable|integer|min:0|max:80',
-            'consultation_fee' => 'nullable|numeric|min:0',
-            'is_available' => 'boolean',
         ]);
 
-        Doctor::create($validated);
+        // Create user first
+        $user = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+            'role' => 'doctor',
+            'password' => bcrypt('password'), // Default password
+        ]);
+
+        // Create doctor
+        $doctor = Doctor::create([
+            'user_id' => $user->id,
+            'specialization' => $validated['specialization'],
+            'license_number' => $validated['license_number'],
+        ]);
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Doctor created successfully.',
+                'doctor' => $doctor->load('user')
+            ]);
+        }
 
         return redirect()->route('doctors.index')->with('success', 'Doctor created successfully.');
     }
@@ -70,15 +92,34 @@ class DoctorController extends Controller
     public function update(Request $request, Doctor $doctor)
     {
         $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|max:255|unique:users,email,' . $doctor->user_id,
+            'phone' => 'nullable|string|max:20',
             'specialization' => 'required|string|max:255',
             'license_number' => 'required|string|max:255|unique:doctors,license_number,' . $doctor->id,
-            'experience_years' => 'nullable|integer|min:0|max:80',
-            'consultation_fee' => 'nullable|numeric|min:0',
-            'is_available' => 'boolean',
         ]);
 
-        $doctor->update($validated);
+        // Update user
+        $doctor->user->update([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'phone' => $validated['phone'],
+        ]);
+
+        // Update doctor
+        $doctor->update([
+            'specialization' => $validated['specialization'],
+            'license_number' => $validated['license_number'],
+        ]);
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Doctor updated successfully.',
+                'doctor' => $doctor->load('user')
+            ]);
+        }
 
         return redirect()->route('doctors.index')->with('success', 'Doctor updated successfully.');
     }

@@ -1,7 +1,7 @@
-import { useForm, Link } from '@inertiajs/react'
+import { useForm, Link, router } from '@inertiajs/react'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import FlashMessage from '@/Components/FlashMessage'
-import { Field, Select, Input, Textarea } from '@/Components/Form'
+import { Field, Select, Input, Textarea, SmartSelect } from '@/Components/Form'
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 
 export default function Create({ patients, doctors }) {
@@ -20,6 +20,102 @@ export default function Create({ patients, doctors }) {
         post('/appointments')
     }
 
+    // Handle add new patient
+    const handleAddPatient = async (formData) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.post('/patients', formData, {
+                    onSuccess: (page) => {
+                        // Get the new patient ID from the response
+                        if (page.props.flash && page.props.flash.patient_id) {
+                            resolve(page.props.flash.patient_id)
+                        } else {
+                            // Fallback: refresh page to get updated list
+                            window.location.reload()
+                            resolve(null)
+                        }
+                    },
+                    onError: (errors) => {
+                        console.error('Error adding patient:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error adding patient:', error)
+            return null
+        }
+    }
+
+    // Handle add new doctor
+    const handleAddDoctor = async (formData) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.post('/doctors', formData, {
+                    onSuccess: (page) => {
+                        // Get the new doctor ID from the response
+                        if (page.props.flash && page.props.flash.doctor_id) {
+                            resolve(page.props.flash.doctor_id)
+                        } else {
+                            // Fallback: refresh page to get updated list
+                            window.location.reload()
+                            resolve(null)
+                        }
+                    },
+                    onError: (errors) => {
+                        console.error('Error adding doctor:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error adding doctor:', error)
+            return null
+        }
+    }
+
+    // Handle edit patient
+    const handleEditPatient = async (formData, patientId) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.put(`/patients/${patientId}`, formData, {
+                    onSuccess: () => {
+                        // Refresh the page to get updated patient list
+                        window.location.reload()
+                        resolve()
+                    },
+                    onError: (errors) => {
+                        console.error('Error editing patient:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error editing patient:', error)
+        }
+    }
+
+    // Handle edit doctor
+    const handleEditDoctor = async (formData, doctorId) => {
+        try {
+            return new Promise((resolve, reject) => {
+                router.put(`/doctors/${doctorId}`, formData, {
+                    onSuccess: () => {
+                        // Refresh the page to get updated doctor list
+                        window.location.reload()
+                        resolve()
+                    },
+                    onError: (errors) => {
+                        console.error('Error editing doctor:', errors)
+                        reject(errors)
+                    }
+                })
+            })
+        } catch (error) {
+            console.error('Error editing doctor:', error)
+        }
+    }
+
     return (
         <AuthenticatedLayout header="Add Appointment">
             <FlashMessage />
@@ -34,23 +130,73 @@ export default function Create({ patients, doctors }) {
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div className="bg-white shadow rounded-lg p-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                        <Field label="Patient" htmlFor="patient_id" required>
-                            <Select id="patient_id" value={data.patient_id} onChange={(e) => setData('patient_id', e.target.value)} required error={errors.patient_id}>
-                                <option value="">Select patient</option>
-                                {patients.map(p => (
-                                    <option key={p.id} value={p.id}>{p.name}</option>
-                                ))}
-                            </Select>
-                        </Field>
+                        <div>
+                            <SmartSelect
+                                label="Patient"
+                                value={data.patient_id}
+                                onChange={(value) => setData('patient_id', value)}
+                                options={patients}
+                                placeholder="Pilih patient..."
+                                required
+                                error={errors.patient_id}
+                                onAdd={handleAddPatient}
+                                onEdit={handleEditPatient}
+                                addFormTitle="Tambah Patient Baru"
+                                editFormTitle="Edit Patient"
+                                addFormFields={[
+                                    { name: 'name', label: 'Nama', type: 'text', required: true, placeholder: 'Masukkan nama patient' },
+                                    { name: 'email', label: 'Email', type: 'email', required: true, placeholder: 'nama@email.com' },
+                                    { name: 'phone', label: 'Nomor Telepon', type: 'tel', placeholder: '081234567890' },
+                                    { name: 'address', label: 'Alamat', type: 'textarea', rows: 3, placeholder: 'Masukkan alamat lengkap' },
+                                    { name: 'birth_date', label: 'Tanggal Lahir', type: 'date' },
+                                    { name: 'gender', label: 'Jenis Kelamin', type: 'select', options: [
+                                        { value: 'male', label: 'Laki-laki' },
+                                        { value: 'female', label: 'Perempuan' }
+                                    ]}
+                                ]}
+                                editFormFields={[
+                                    { name: 'name', label: 'Nama', type: 'text', required: true },
+                                    { name: 'email', label: 'Email', type: 'email', required: true },
+                                    { name: 'phone', label: 'Nomor Telepon', type: 'tel' },
+                                    { name: 'address', label: 'Alamat', type: 'textarea', rows: 3 },
+                                    { name: 'birth_date', label: 'Tanggal Lahir', type: 'date' },
+                                    { name: 'gender', label: 'Jenis Kelamin', type: 'select', options: [
+                                        { value: 'male', label: 'Laki-laki' },
+                                        { value: 'female', label: 'Perempuan' }
+                                    ]}
+                                ]}
+                            />
+                        </div>
 
-                        <Field label="Doctor" htmlFor="doctor_id" required>
-                            <Select id="doctor_id" value={data.doctor_id} onChange={(e) => setData('doctor_id', e.target.value)} required error={errors.doctor_id}>
-                                <option value="">Select doctor</option>
-                                {doctors.map(d => (
-                                    <option key={d.id} value={d.id}>{d.name}</option>
-                                ))}
-                            </Select>
-                        </Field>
+                        <div>
+                            <SmartSelect
+                                label="Doctor"
+                                value={data.doctor_id}
+                                onChange={(value) => setData('doctor_id', value)}
+                                options={doctors}
+                                placeholder="Pilih doctor..."
+                                required
+                                error={errors.doctor_id}
+                                onAdd={handleAddDoctor}
+                                onEdit={handleEditDoctor}
+                                addFormTitle="Tambah Doctor Baru"
+                                editFormTitle="Edit Doctor"
+                                addFormFields={[
+                                    { name: 'name', label: 'Nama', type: 'text', required: true, placeholder: 'Masukkan nama doctor' },
+                                    { name: 'email', label: 'Email', type: 'email', required: true, placeholder: 'nama@email.com' },
+                                    { name: 'phone', label: 'Nomor Telepon', type: 'tel', placeholder: '081234567890' },
+                                    { name: 'specialization', label: 'Spesialisasi', type: 'text', required: true, placeholder: 'Contoh: Kardiologi' },
+                                    { name: 'license_number', label: 'Nomor SIP', type: 'text', required: true, placeholder: 'Nomor Surat Izin Praktik' }
+                                ]}
+                                editFormFields={[
+                                    { name: 'name', label: 'Nama', type: 'text', required: true },
+                                    { name: 'email', label: 'Email', type: 'email', required: true },
+                                    { name: 'phone', label: 'Nomor Telepon', type: 'tel' },
+                                    { name: 'specialization', label: 'Spesialisasi', type: 'text', required: true },
+                                    { name: 'license_number', label: 'Nomor SIP', type: 'text', required: true }
+                                ]}
+                            />
+                        </div>
 
                         <Field label="Date" htmlFor="appointment_date" required>
                             <Input id="appointment_date" type="date" value={data.appointment_date} onChange={(e) => setData('appointment_date', e.target.value)} required error={errors.appointment_date} />

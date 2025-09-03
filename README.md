@@ -82,6 +82,8 @@ php artisan serve
 ### Rute Penting (Web)
 - `/login` – Halaman Login
 - `/dashboard` – Dashboard
+- `/profile` – Halaman Profil User
+- `/password/change` – Halaman Ganti Password
 - `/patients` – CRUD Pasien
 - `/lab-results` – CRUD Hasil Lab
 

@@ -34,24 +34,24 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'medical_record_number' => 'required|string|unique:patients,medical_record_number',
             'name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'gender' => 'required|in:male,female',
-            'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'blood_type' => 'nullable|in:A,B,AB,O',
-            'allergies' => 'nullable|string',
-            'medical_history' => 'nullable|string',
-            'insurance_number' => 'nullable|string|max:255',
-            'insurance_type' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|in:male,female',
         ]);
 
-        Patient::create($validated);
+        $patient = Patient::create($validated);
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient created successfully.',
+                'patient' => $patient
+            ]);
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Patient created successfully.');
@@ -74,24 +74,24 @@ class PatientController extends Controller
     public function update(Request $request, Patient $patient)
     {
         $validated = $request->validate([
-            'medical_record_number' => 'required|string|unique:patients,medical_record_number,' . $patient->id,
             'name' => 'required|string|max:255',
-            'birth_date' => 'required|date',
-            'gender' => 'required|in:male,female',
-            'phone' => 'nullable|string|max:20',
             'email' => 'nullable|email|max:255',
+            'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'emergency_contact_name' => 'nullable|string|max:255',
-            'emergency_contact_phone' => 'nullable|string|max:20',
-            'blood_type' => 'nullable|in:A,B,AB,O',
-            'allergies' => 'nullable|string',
-            'medical_history' => 'nullable|string',
-            'insurance_number' => 'nullable|string|max:255',
-            'insurance_type' => 'nullable|string|max:255',
-            'is_active' => 'boolean',
+            'birth_date' => 'nullable|date',
+            'gender' => 'nullable|in:male,female',
         ]);
 
         $patient->update($validated);
+
+        // If it's an AJAX request, return JSON
+        if ($request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Patient updated successfully.',
+                'patient' => $patient
+            ]);
+        }
 
         return redirect()->route('patients.index')
             ->with('success', 'Patient updated successfully.');

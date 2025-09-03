@@ -9,6 +9,12 @@ Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// Profile Routes
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+Route::put('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
+Route::get('/password/change', [App\Http\Controllers\ProfileController::class, 'showChangePassword'])->name('password.change');
+Route::put('/password/change', [App\Http\Controllers\ProfileController::class, 'changePassword'])->name('password.change.update');
+
 // Protected Routes
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
