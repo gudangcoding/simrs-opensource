@@ -16,9 +16,10 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\HandleInertiaRequests::class,
         ]);
         
-        $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRole::class,
-        ]);
+                    $middleware->alias([
+                'role' => \App\Http\Middleware\CheckRole::class,
+                'auth.patient' => \App\Http\Middleware\PatientApiAuth::class,
+            ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

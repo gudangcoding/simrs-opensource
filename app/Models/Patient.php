@@ -21,6 +21,7 @@ class Patient extends Model
         'gender',
         'phone',
         'email',
+        'password',
         'address',
         'emergency_contact_name',
         'emergency_contact_phone',
@@ -30,6 +31,10 @@ class Patient extends Model
         'insurance_number',
         'insurance_type',
         'is_active',
+        'api_token',
+        'latitude',
+        'longitude',
+        'location_updated_at',
     ];
 
     /**
@@ -43,6 +48,7 @@ class Patient extends Model
             'id' => 'integer',
             'birth_date' => 'date',
             'is_active' => 'boolean',
+            'password' => 'hashed',
             'created_at' => 'timestamp',
             'updated_at' => 'timestamp',
         ];
