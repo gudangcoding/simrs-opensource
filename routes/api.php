@@ -22,3 +22,4 @@ Route::apiResource('insurances', App\Http\Controllers\InsuranceController::class
 Route::apiResource('patient-insurances', App\Http\Controllers\PatientInsuranceController::class);
 Route::apiResource('schedules', App\Http\Controllers\ScheduleController::class);
 Route::apiResource('notifications', App\Http\Controllers\NotificationController::class);
+Route::post('/login', [App\Http\Controllers\AuthController::class, 'apiLogin']);
